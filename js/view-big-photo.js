@@ -17,3 +17,5 @@ picturesContainer.addEventListener('click', (evt) => {
     document.addEventListener('keydown', onKeydownEsc);
   }
 });
+
+
