@@ -1,7 +1,7 @@
-import { photos } from './display-photos';
-import './view-big-photo.js';
+import { getData } from './api.js';
 import {displayComments} from './shown-comments.js';
 
+const picturesContainer = document.querySelector('.pictures');
 const bigPictureImg = document.querySelector('.big-picture__img img');
 const likesCount = document.querySelector('.likes-count');
 const socialCaption = document.querySelector('.social__caption');
@@ -9,27 +9,23 @@ const bigPicture = document.querySelector('.big-picture');
 const bodyModalOpen = document.querySelector('body');
 const bigPictureCancel = document.querySelector('.big-picture__cancel');
 
-const displayImage = function (item) {
-  for (let i = 0; i < photos.length; i++) {
-    if (photos[i].id === Number(item)) {
-      const currentElement = photos[i];
-      bigPictureImg.src = currentElement.url;
-      bigPictureImg.alt = currentElement.description;
-      likesCount.textContent = currentElement.likes;
-      socialCaption.textContent = currentElement.description;
-      displayComments(currentElement);
-    }
-  }
-};
-
-const onBigPhotoClickClose = () => {
-  closeBigPhoto();
-};
-
-const onKeydownEsc = (evt) => {
-  if (evt.key === 'Escape') {
+const showBigPhoto = (evt) => {
+  const currentPictuer = evt.target.closest('.picture');
+  if(currentPictuer) {
     evt.preventDefault();
-    closeBigPhoto();
+    const elementId = currentPictuer.dataset.photoId;
+    bigPictureImg.src = currentPictuer.querySelector('.picture__img').src ;
+    bigPictureImg.alt = currentPictuer.querySelector('.picture__img').alt;
+    socialCaption.textContent = currentPictuer.querySelector('.picture__img').alt;
+    likesCount.textContent = currentPictuer.querySelector('.picture__likes').textContent;
+    getData()
+      .then((data) => {
+        displayComments(data[elementId]);
+      });
+    bigPicture.classList.remove('hidden');
+    bodyModalOpen.classList.add('.modal-open');
+    bigPictureCancel.addEventListener('click', onBigPhotoClickClose);
+    document.addEventListener('keydown', onKeydownEsc);
   }
 };
 
@@ -40,4 +36,15 @@ function closeBigPhoto () {
   document.removeEventListener('keydown', onKeydownEsc);
 }
 
-export {displayImage, onBigPhotoClickClose, onKeydownEsc};
+function onBigPhotoClickClose() {
+  closeBigPhoto();
+}
+
+function onKeydownEsc (evt) {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    closeBigPhoto();
+  }
+}
+
+picturesContainer.addEventListener('click', showBigPhoto);

@@ -1,4 +1,6 @@
 import { editImage } from './edit-image.js';
+import { setData } from './api.js';
+import { showErrorSubmittingToServer } from './response-server.js';
 
 const MAX_HASHTAGS = 5;
 const messageErrorValidation = {
@@ -16,6 +18,7 @@ const textHashtags = imgUploadForm.querySelector('.text__hashtags');
 const description = imgUploadForm.querySelector('.text__description');
 const imgUploadPreview = document.querySelector('.img-upload__preview img');
 const imgUploadEffectLevel = document.querySelector('.img-upload__effect-level');
+const imgUploadSubmit = document.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(imgUploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -28,6 +31,7 @@ const openForm = () => {
   bodyModalOpen.classList.add('modal-open');
   document.addEventListener('keydown', onKeydownEsc);
   editImage();
+
 };
 
 const closeForm = () => {
@@ -47,6 +51,12 @@ function onKeydownEsc (evt){
       textHashtags.blur();
       description.blur();
       evt.stopPropagation();
+    } else if(document.querySelector('.success')) {
+      document.querySelector('.success').remove();
+      closeForm();
+    } else if(document.querySelector('.error')) {
+      document.querySelector('.error').remove();
+      imgUploadSubmit.blur();
     } else {
       closeForm();
     }
@@ -101,7 +111,7 @@ pristine.addValidator(
 );
 
 function isMessageLength(value) {
-  const isValid = /^[a-zа-яё0-9.,:;?!-\s]{0,140}$/i.test(value);
+  const isValid = /^[a-zа-яё0-9.,:;?!`*@"^&$%№#()=+\\|/-\s]{0,140}$/i.test(value);
   return isValid;
 }
 
@@ -122,11 +132,19 @@ const onOpenForm = () => {
 };
 
 const onSubmitForm = (evt) => {
-  if(!pristine.validate()) {
-    evt.preventDefault();
+  evt.preventDefault();
+  const isValide = pristine.validate();
+  if(isValide) {
+    imgUploadSubmit.disabled = true;
+    setData(new FormData(evt.target));
+  } else {
+    showErrorSubmittingToServer();
   }
 };
 
 imgUploadInput.addEventListener('change', onOpenForm);
 imgUploadCancel.addEventListener('click', onCloseForm);
 imgUploadForm.addEventListener('submit', onSubmitForm);
+
+
+export {closeForm};

@@ -31,7 +31,7 @@ imgUploadEffects.addEventListener('change', (evt) => {
         min: 0,
         max: 1,
       },
-      start: 0,
+      start: 1,
       step: 0.1,
     });
     effectLevelSlider.noUiSlider.on('update', () => {
@@ -44,7 +44,7 @@ imgUploadEffects.addEventListener('change', (evt) => {
         min: 0,
         max: 1,
       },
-      start: 0,
+      start: 1,
       step: 0.1,
     });
     effectLevelSlider.noUiSlider.on('update', () => {
@@ -57,7 +57,7 @@ imgUploadEffects.addEventListener('change', (evt) => {
         min: 0,
         max: 100,
       },
-      start: 0,
+      start: 100,
       step: 1,
     });
     effectLevelSlider.noUiSlider.on('update', () => {
@@ -70,7 +70,7 @@ imgUploadEffects.addEventListener('change', (evt) => {
         min: 0,
         max: 3,
       },
-      start: 0,
+      start: 3,
       step: 0.1,
     });
     effectLevelSlider.noUiSlider.on('update', () => {
@@ -83,7 +83,7 @@ imgUploadEffects.addEventListener('change', (evt) => {
         min: 1,
         max: 3,
       },
-      start: 1,
+      start: 3,
       step: 0.1,
     });
     effectLevelSlider.noUiSlider.on('update', () => {
