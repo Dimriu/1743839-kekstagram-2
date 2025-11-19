@@ -20,4 +20,32 @@ const createIdGenerator = function () {
   };
 };
 
-export { getRandomInteger, getRandomArrayElement, createIdGenerator };
+//  Функция-генератор для получения случайных идентификаторов из указанного диапазона, и так, чтобы они не повторялись
+function createRandomIdFromRangeGenerator (min, max) {
+  const previousValues = [];
+
+  return function () {
+    let currentValue = getRandomInteger(min, max);
+    if (previousValues.length >= (max - min + 1)) {
+      //console.error('Перебраны все числа из диапазона от ' + min + ' до ' + max);
+      return null;
+    }
+    while (previousValues.includes(currentValue)) {
+      currentValue = getRandomInteger(min, max);
+    }
+    previousValues.push(currentValue);
+    return currentValue;
+  };
+}
+
+// Функция debounce
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+
+export { getRandomInteger, getRandomArrayElement, createIdGenerator, createRandomIdFromRangeGenerator, debounce };

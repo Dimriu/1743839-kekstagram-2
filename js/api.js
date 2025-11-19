@@ -1,4 +1,5 @@
 import { showErrorDownloadingFromServer, showSuccessSubmittingToServer, showErrorSubmittingToServer } from './response-server.js';
+//import {debounce} from './utils.js'
 const imgUploadSubmit = document.querySelector('.img-upload__submit');
 
 const getData = () =>
@@ -11,6 +12,8 @@ const getData = () =>
     .then((response) => {
       if (response.ok) {
         return response.json();
+      } else {
+        showErrorDownloadingFromServer();
       }
     })
     .then((data) => data)

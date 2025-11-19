@@ -1,11 +1,10 @@
-import { getData } from './api.js';
-
 const picturesContainer = document.querySelector('.pictures');
 const templatePicture = document.querySelector('#picture').content;
 const elementPicture = templatePicture.querySelector('.picture');
 
 const displayPhotos = function (items) {
   const photosFragment = document.createDocumentFragment();
+
   items.forEach(({id, url, description, likes, comments}) => {
     const picture = elementPicture.cloneNode(true);
     picture.dataset.photoId = id;
@@ -16,9 +15,7 @@ const displayPhotos = function (items) {
     photosFragment.append(picture);
   });
   picturesContainer.appendChild(photosFragment);
+  return picturesContainer;
 };
 
-getData()
-  .then((data) => {
-    displayPhotos(data.slice());
-  });
+export {displayPhotos};
