@@ -5,5 +5,6 @@ import './edit-image.js';
 import './apply-effect-image.js';
 import './api.js';
 import './filters.js';
+import './photo.js';
 
 
